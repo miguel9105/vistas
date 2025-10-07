@@ -1,0 +1,311 @@
+/* Home.css - Estilos profesionales para sistema de gestión de desastres */
+
+/* Variables de colores basados en la paleta actualizada */
+:root {
+  --primary-blue: #385B8A;      /* Azul gris oscuro - Color principal */
+  --secondary-black: #000000;   /* Negro puro - Tipografía principal */
+  --accent-gold: #FFD700;       /* Amarillo alerta - Destacar elementos */
+  --alert-red: #D72638;         /* Rojo controlado - Alertas graves */
+  --light-bg: #F9FAFB;          /* Fondo claro neutro - Fondos claros */
+  --white: #FFFFFF;             /* Blanco puro */
+  --light-blue: #E8EFF7;        /* Azul claro para fondos alternos */
+}
+
+/* Estilos generales */
+.home-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--secondary-black);
+  line-height: 1.6;
+  background-color: var(--white);
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  text-align: center;
+  color: var(--primary-blue);
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Sección Hero */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, #000000 100%);
+  color: var(--white);
+  padding: 8rem 0;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.intro-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.intro-subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 3rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-primary, .btn-secondary, .btn-register, .btn-chat {
+  display: inline-block;
+  padding: 15px 35px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--accent-gold);
+  color: var(--secondary-black);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.btn-primary:hover {
+  background-color: #e6c200;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--white);
+  border: 2px solid var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+/* Sección de Noticias/Carrusel */
+.news-carousel {
+  background-color: var(--light-bg);
+  padding: 4rem 0;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Requerido para React-Slick */
+.slick-prev:before, .slick-next:before {
+    color: var(--primary-blue) !important;
+}
+.slick-dots li button:before {
+    color: var(--primary-blue) !important;
+}
+
+/* Sección de Contactos */
+.emergency-contacts {
+  padding: 4rem 0;
+  background-color: var(--white);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  text-align: center;
+}
+
+.contact-card {
+  background-color: var(--light-blue);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.contact-card h3 {
+  margin: 15px 0 5px;
+  color: var(--primary-blue);
+}
+
+.contact-card p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.btn-chat {
+  display: block;
+  width: 80%;
+  margin: 0 auto 20px;
+  background-color: #18df29;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  text-transform: uppercase;
+}
+.btn-chat:hover {
+  background-color: #1bd82aab;
+}
+
+/* Sección de Descarga */
+.download-app {
+  padding: 4rem 0;
+  background-color: var(--light-blue);
+}
+
+.download-grid {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.download-qr {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.qr-code-img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.app-badges img {
+  width: 150px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.download-text {
+  flex-grow: 1;
+}
+
+.download-title {
+  font-size: 2rem;
+  color: var(--secondary-black);
+  margin-bottom: 1rem;
+}
+
+.download-description {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+}
+
+.features-list li {
+  margin-bottom: 10px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.features-list li i {
+  color: var(--primary-blue);
+  margin-right: 0.8rem;
+  width: 20px;
+  font-size: 1.1rem;
+}
+
+/* Sección de Llamado a la Acción */
+.cta-section {
+  background: linear-gradient(135deg, var(--alert-red) 0%, var(--secondary-black) 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.cta-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.cta-section p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.btn-register {
+    background-color: var(--accent-gold);
+    color: var(--secondary-black);
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+}
+
+.btn-register:hover {
+    background-color: #e6c200;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .download-grid {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel-image {
+    height: 300px;
+  }
+
+  .download-qr {
+    order: 2;
+  }
+}

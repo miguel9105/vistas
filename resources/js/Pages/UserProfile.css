@@ -1,0 +1,298 @@
+/* FONDO CON VIDEO */
+.video-profile-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* CONTENEDOR CENTRAL */
+.profile-container {
+  background-color: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  width: 100%;
+  max-width: 620px;  
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.profile-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.profile-container p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+/* FORMULARIO */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.profile-form label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.profile-form input,
+.profile-form select {
+  padding: 14px;
+  font-size: 1rem;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+  outline: none;
+  border-color: #fff;
+  background-color: #252525;
+}
+
+/* CÍRCULO DE FOTO (igual que Register) */
+.circle-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #1e1e1e;
+  border: 2px solid #91e0a7;
+  margin: 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.circle-image:hover {
+  border-color: #ffe600;
+}
+
+.circle-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.default-user-icon {
+  font-size: 40px;
+  color: #ccc;
+}
+
+/* ACCIONES DE FOTO */
+.photo-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.photo-actions > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 0.85rem;
+}
+
+.photo-actions > div:hover {
+  color: #ffe600;
+}
+
+/* BOTÓN */
+.profile-form button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+  background-color: #f8ec3b;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-form button:hover {
+  background-color: #2bd600;
+  transform: scale(0.97);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 25px 20px;
+  }
+}
+/* MODAL CONFIRMACIÓN */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.btn-confirm,
+.btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background-color: #2bd600;
+  color: #000;
+}
+
+.btn-cancel {
+  background-color: #444;
+  color: #fff;
+}
+
+/* TOAST ÉXITO */
+.toast-success {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2bd600;
+  color: #000;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translate(-50%, -100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+/* Video loader */
+.video-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  color: #fff;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Drag-over highlight */
+.circle-image.drag-over {
+  border-color: #ffe600;
+  transform: scale(1.05);
+}
+
+/* Iniciales */
+.initials {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #fff;
+  user-select: none;
+}
+
+/* Success message */
+.success-msg {
+  margin-top: 10px;
+  color: #2bd600;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Photo-actions botones táctiles grandes */
+.photo-actions button {
+  background: none;
+  border: none;
+  color: #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px;
+  min-width: 60px;
+  cursor: pointer;
+  transition: color .2s;
+}
+.photo-actions button:hover,
+.photo-actions button:focus-visible {
+  color: #ffe600;
+}
+
+/* Evitar zoom en iOS */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select {
+  font-size: 16px;
+}
