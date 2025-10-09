@@ -1,7 +1,7 @@
 import React from 'react';
 import MainLayout from '../Layouts/MainLayout';
 import './Conocenos.css';
-import { FaFacebook, FaGithub, FaDribbble, FaTwitter, FaEnvelope, FaLink } from 'react-icons/fa';
+import { FaFacebook, FaGithub, FaTwitter, FaEnvelope, FaCode } from 'react-icons/fa';
 
 // Importar imágenes (asume que están en public/images/o resources/js/assets)
 const kodelamd = '/images/kodelamd.JPG';
@@ -12,15 +12,12 @@ const kevin = '/images/kevin.jpg';
 const luis = '/images/luis.jpg';
 
 const TeamMemberCard = ({ image, name, role, description, socialLinks }) => (
-    <div className="col-lg-4 col-md-6 mb-4">
+    <div className="team-member-wrapper mb-4">
         <div className="team-card shadow-sm border-0">
             <div className="team-image-container">
-                <img src={image} alt={name} className="img-fluid rounded-top" />
+                <img src={image} alt={name} className="img-fluid" /> 
                 <div className="team-overlay">
                     <div className="social-links-overlay">
-                        {socialLinks.facebook && (
-                            <a href={socialLinks.facebook} className="btn" aria-label="Facebook"><FaFacebook /></a>
-                        )}
                         {socialLinks.github && (
                             <a href={socialLinks.github} className="btn" aria-label="GitHub"><FaGithub /></a>
                         )}
@@ -30,12 +27,14 @@ const TeamMemberCard = ({ image, name, role, description, socialLinks }) => (
                         {socialLinks.email && (
                             <a href={`mailto:${socialLinks.email}`} className="btn" aria-label="Email"><FaEnvelope /></a>
                         )}
+                        {/* Se eliminó Facebook para mantener un set más profesional (GitHub, Twitter, Email) */}
                     </div>
                 </div>
             </div>
             <div className="card-body p-4 text-center">
                 <h5 className="card-title fw-bold">{name}</h5>
-                <p className="text-primary mb-3">{role}</p>
+                {/* Texto de rol más prominente */}
+                <p className="role-text mb-3">{role}</p> 
                 <p className="card-text text-muted">{description}</p>
             </div>
         </div>
@@ -55,31 +54,40 @@ const Conocenos = () => {
 
     return (
         <MainLayout>
-            <div className="conocenos-page"> {/* Contenedor principal con fondo claro */}
-                {/* Sección Hero */}
+            <div className="conocenos-page">
+                {/* Sección Hero: Diseño Lateral */}
                 <section className="hero-section">
-                    <div className="hero-container">
-                        <div className="hero-logo">
-                            {/* Usa la ruta pública si kodelamd.JPG está en public/images */}
-                            <img src={kodelamd} alt="Kodelamd" />
-                        </div>
+                    <div className="container hero-container">
+                        
                         <div className="hero-text">
-                            <h1>Conócenos</h1>
+                            <h1 className="hero-title">Conócenos</h1>
                             <div className="divider"></div>
-                            <p>
-                                En KodeLAMD, somos un equipo de cinco jóvenes innovadores que han unido fuerzas para revolucionar el mundo del desarrollo de software. Nuestra pasión por la tecnología nos impulsa a crear soluciones digitales a medida que no solo cumplen, sino que superan las expectativas.
+                            <p className="hero-description">
+                                En **KodeLAMD**, somos un equipo de cinco jóvenes innovadores que han unido fuerzas para revolucionar el mundo del desarrollo de software. Nuestra pasión por la tecnología nos impulsa a crear soluciones digitales a medida que no solo cumplen, sino que superan las expectativas.
                             </p>
+                            {/* Botón CTA primario en el Hero */}
+                             <a href="#equipo" className="btn-hero">
+                                <FaCode style={{ marginRight: '10px' }} /> 
+                                Ver Nuestro Equipo
+                            </a>
                         </div>
+
+                         <div className="hero-logo-wrapper">
+                            <div className="hero-logo-circle">
+                                <img src={kodelamd} alt="Kodelamd Logo" className="img-fluid" />
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
                 {/* Sección "Quiénes Somos" */}
                 <section id="quienes-somos" className="quienes-somos-section">
                     <div className="container text-center">
-                        <h2 className="display-5 fw-bold">Quiénes Somos</h2>
-                        <div className="bg-primary mx-auto mb-5" style={{ width: '50px', height: '4px' }}></div>
+                        <h2 className="display-5 fw-bold section-subtitle">Quiénes Somos</h2>
+                        <div className="bg-primary mx-auto mb-5 divider-short"></div>
                         <p className="lead text-muted">
-                            Somos los creadores de DESAS3, un sistema de comunicación diseñado específicamente para enfrentar y mitigar los riesgos de desastres naturales en nuestra comunidad. Nuestro objetivo es usar la tecnología para salvar vidas.
+                            Somos los creadores de **DESAS3**, un sistema de comunicación diseñado específicamente para enfrentar y mitigar los riesgos de desastres naturales en nuestra comunidad. Nuestro objetivo es usar la tecnología para salvar vidas.
                         </p>
                     </div>
                 </section>
@@ -87,8 +95,8 @@ const Conocenos = () => {
                 {/* Sección del equipo */}
                 <section id="equipo" className="team-section">
                     <div className="container">
-                        <h2 className="section-title text-center">Nuestro Equipo</h2>
-                        <div className="row">
+                        <h2 className="section-title text-center">Nuestro Equipo ✨</h2>
+                        <div className="team-grid">
                             {teamData.map((member, index) => (
                                 <TeamMemberCard 
                                     key={index}
@@ -103,14 +111,14 @@ const Conocenos = () => {
                     </div>
                 </section>
 
-                {/* Llamado a la Acción */}
+                {/* Llamado a la Acción: Fondo más oscuro y botón de alto contraste */}
                 <section className="cta-section">
-                    <div className="container">
-                        <h2>¿Listo para colaborar?</h2>
+                    <div className="container text-center">
+                        <h2>¿Listo para colaborar? 🚀</h2>
                         <p>Contáctanos para más información sobre nuestros proyectos.</p>
-                        <a href="mailto:desas3@sena.edu.co" className="btn-cta">
+                        <a href="mailto:desas3@sena.edu.co" className="btn-cta-contact">
                             <FaEnvelope style={{ marginRight: '10px' }} /> 
-                            Escríbenos
+                            Escríbenos Hoy
                         </a>
                     </div>
                 </section>
