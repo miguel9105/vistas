@@ -1,474 +1,355 @@
-/* Home.css - Estilos profesionales para sistema de gestión de desastres (INTEGRADO) */
-
-/* Estilos base y tipografía */
+/* Variables Globales */
 :root {
-  --emergency-red: #e63946;    /* Rojo primario de acción/alerta */
-  --alert-orange: #f77f00;     /* Naranja para alertas/CTA secundaria */
-  --safety-blue: #1d3557;      /* Azul oscuro principal/seguridad */
-  --light-blue: #a8dadc;       /* Azul claro de acento */
-  --clean-white: #f1faee;      /* Fondo principal muy claro */
-  --dark-bg: #0d1b2a;          /* Fondo oscuro/detalles de contraste */
-  --white: #FFFFFF;            /* Blanco puro */
+    --emergency-red: #e63946; /* Rojo principal de emergencia */
+    --safety-blue: #1d3557; /* Azul oscuro (primario) */
+    --clean-white: #f1faee; /* Fondo muy claro */
+    --card-bg: white;
+    --text-dark: #333;
+    --text-gray: #6c757d;
+    --dark-bg: #0d1b2a; /* Fondo oscuro para el carrusel */
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  background-color: var(--clean-white);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--clean-white);
 }
 
-/* Contenedor general */
 .home-container {
-  width: 100%;
-  overflow-x: hidden;
+    width: 100%;
+    overflow-x: hidden;
 }
 
-/* Secciones comunes */
 .section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .section-title {
-  font-size: 2.2rem;
-  margin-bottom: 50px;
-  font-weight: 700;
-  text-align: center;
-  position: relative;
-  color: var(--safety-blue);
+    font-size: 2.2rem;
+    margin: 60px 0 50px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--safety-blue);
+    position: relative;
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 4px;
-  background: var(--emergency-red);
-  margin: 15px auto 0;
-}
-
-/* -------------------------------------- */
-/* SECCIÓN HERO */
-/* -------------------------------------- */
+/* ------------------------------------------------------------------- */
+/* 1. SECCIÓN HERO (Intro) - MODIFICADA CON FONDO AZUL */
+/* ------------------------------------------------------------------- */
 
 .hero-section {
-  background: linear-gradient(135deg, var(--safety-blue) 0%, var(--dark-bg) 100%);
-  color: var(--white);
-  padding: 120px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+');
-}
-
-.hero-content {
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+    /* 🚨 Fondo Azul Oscuro solicitado */
+    background-color: var(--safety-blue);
+    padding: 80px 20px;
+    text-align: center;
+    color: white; /* Texto blanco sobre fondo azul */
 }
 
 .intro-subtitle {
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-  color: var(--light-blue);
-  text-transform: uppercase;
+    font-size: 1rem;
+    color: var(--emergency-red); /* Rojo de alerta */
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .intro-title {
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin-bottom: 25px;
-  line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    font-size: 3rem;
+    font-weight: 800;
+    color: white; /* Título blanco */
+    margin: 15px 0 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    color: #a8dadc; /* Azul claro para el texto de apoyo */
+    margin-bottom: 40px;
 }
 
 .hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
-/* Estilos de Botones adaptados a las clases de JSX: Aliasing para compatibilidad */
-/* .btn-primary y .btn-project (CONOCE EL PROYECTO) -> Estilo borde/transparente */
-.btn-primary, .btn-project {
-  background-color: transparent;
-  color: var(--white);
-  padding: 15px 30px;
-  font-size: 1.1rem;
-  border: 2px solid var(--white);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-decoration: none;
-  display: inline-block;
-}
-.btn-primary:hover, .btn-project:hover {
-  background-color: rgba(255,255,255,0.1);
-  transform: translateY(-2px);
-}
-
-/* .btn-secondary y .btn-emergency (REPORTAR EMERGENCIA) -> Estilo sólido rojo */
-.btn-secondary, .btn-emergency {
-  background-color: var(--emergency-red);
-  color: var(--white);
-  padding: 15px 30px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  text-decoration: none;
-  display: inline-block;
-}
-.btn-secondary:hover, .btn-emergency:hover {
-  background-color: #d62839;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-/* -------------------------------------- */
-/* SECCIÓN DE REPORTE DE DESASTRES (disaster-report-section) - NUEVA */
-/* -------------------------------------- */
-
-/* -------------------------------------- */
-/* SECCIÓN DE REPORTE DE DESASTRES (disaster-report-section) - INNOVADOR Y AMPLIADO */
-/* -------------------------------------- */
-
-.disaster-report-section {
-    padding: 100px 0;
-    background-color: var(--clean-white); /* Fondo principal muy claro */
-}
-
-.report-header {
+.btn-emergency, .btn-project {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-transform: uppercase;
     text-align: center;
-    margin-bottom: 50px;
+}
+
+.btn-emergency {
+    /* Mantenemos el botón rojo vibrante */
+    background: linear-gradient(135deg, var(--emergency-red) 0%, #d62839 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+}
+
+.btn-project {
+    /* Botón de 'Conoce el Proyecto' con borde blanco */
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+.btn-project:hover {
+    background-color: white;
     color: var(--safety-blue);
 }
 
+/* ------------------------------------------------------------------- */
+/* 2. SECCIÓN DE REPORTE DE DESASTRES - MODIFICADA */
+/* ------------------------------------------------------------------- */
+
+.disaster-report-section {
+    padding: 40px 0 80px 0;
+    background-color: var(--clean-white);
+}
+
+.report-header {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    text-align: center;
+}
+
 .report-main-title {
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 10px;
+    font-size: 1.4rem; /* Reducido para parecer más a la app */
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 5px;
 }
 
 .report-subtitle {
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 25px;
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 20px;
 }
 
-.urgency-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 15px;
+.btn-mobile-immediate {
+    /* Este es el botón "INFORMAR EMERGENCIA" justo debajo del título */
+    background: var(--emergency-red);
+    color: white;
+    padding: 15px 25px;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--emergency-red);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.pulse-dot {
-    width: 12px;
-    height: 12px;
-    background-color: var(--emergency-red);
-    border-radius: 50%;
-    margin-right: 10px;
-    box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7);
-    transform: scale(1);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7);
-    }
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(230, 57, 70, 0);
-    }
-    100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
-    }
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
 }
 
 .disaster-report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajuste de ancho mínimo */
-    gap: 30px; /* Aumento de espacio */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px; /* Aumentamos el gap para separar las tarjetas */
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.report-button {
-    background-color: var(--white);
-    padding: 30px 20px; /* Aumento de padding */
-    border-radius: 16px; /* Bordes más redondeados */
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra más fuerte */
+.report-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    /* Reducimos el padding vertical y ajustamos para el nuevo diseño */
+    padding: 20px 15px 15px 15px;
     display: flex;
-    flex-direction: column; /* Diseño vertical (ícono arriba, texto abajo) */
+    flex-direction: column;
     align-items: center;
+    justify-content: flex-start; /* Alinear arriba para el nuevo diseño */
     text-align: center;
-    transition: all 0.4s ease;
     text-decoration: none;
-    color: inherit;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 5px solid var(--light-blue); /* Borde acentuado */
+    color: var(--text-dark);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, border 0.3s ease;
+    border: 1px solid #eee;
+    
+    /* 🚨 Posición relativa para colocar el icono fuera */
+    position: relative; 
+    padding-top: 50px; /* Espacio para que el icono sobresalga */
 }
 
-.report-button:hover {
-    transform: translateY(-8px) rotateZ(0.5deg); /* Efecto dinámico en hover */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    border-bottom-color: var(--emergency-red); /* Cambio de color en hover */
+.report-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--emergency-red);
 }
 
-/* Acentos visuales opcionales: Adaptados al nuevo border-bottom */
-.derrumbe-btn { border-bottom: 5px solid var(--safety-blue); }
-.incendio-btn { border-bottom: 5px solid var(--alert-orange); }
-.tormenta-btn { border-bottom: 5px solid var(--light-blue); }
-.inundacion-btn { border-bottom: 5px solid var(--emergency-red); }
-
-
-.report-icon-container {
-    margin: 0 auto 25px; /* Centrado y con espacio inferior */
-    min-width: 90px; /* IMAGEN MÁS GRANDE */
-    height: 90px; /* IMAGEN MÁS GRANDE */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--clean-white);
-    border-radius: 50%;
-    border: 3px solid var(--emergency-red); /* Borde de resalte */
-    flex-shrink: 0;
-    transition: all 0.4s ease;
-}
-
-.report-button:hover .report-icon-container {
-    background-color: var(--emergency-red);
-    border-color: var(--safety-blue);
-    transform: scale(1.05);
-}
-
-.report-icon {
-    width: 60px; /* Icono interno más grande */
-    height: 60px; /* Icono interno más grande */
+/* 🚨 CONTENEDOR DEL ICONO FUERA DEL RECUADRO */
+.report-card img.report-icon {
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    transition: all 0.4s ease;
+    
+    /* 🚨 Posicionamiento absoluto para sacar el icono */
+    position: absolute;
+    top: -30px; /* Levanta el icono para que la mitad quede fuera */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Estilos del contenedor del icono */
+    background-color: var(--card-bg);
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    padding: 8px; /* Espacio alrededor del icono dentro del círculo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    /* Aplicar color rojo para simular el estilo de la app */
+    /* Nota: Esto asume que tus PNG son de un color que puede ser modificado con filtros, si no, reemplaza por SVGs. */
+    filter: invert(39%) sepia(87%) saturate(5425%) hue-rotate(345deg) brightness(85%) contrast(100%);
 }
 
-.report-button:hover .report-icon {
-    filter: invert(1); /* Icono se vuelve blanco en hover (innovador) */
-}
-
-
-.report-content {
-    flex-grow: 1;
-    text-align: center;
-}
-
+/* 🚨 AJUSTES PARA EL TEXTO (Más Prolijo) */
 .report-name {
-    font-size: 1.6rem; /* TEXTO MÁS GRANDE */
-    font-weight: 800;
-    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 5px 0; /* Eliminamos el margen superior que interfería */
     color: var(--safety-blue);
-    text-transform: uppercase;
 }
 
 .report-action {
-    font-size: 1.1rem; /* TEXTO MÁS GRANDE */
-    color: var(--alert-orange); /* Color de alerta para el CTA secundario */
-    font-weight: 600;
-    margin-top: 5px;
-}
-
-/* Se elimina el elemento .report-arrow ya que no es funcional en un diseño vertical. */
-.report-arrow {
-    display: none;
-}
-
-.emergency-footer {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    background-color: var(--dark-bg);
-    border-radius: 8px;
-    color: var(--white);
-}
-
-.emergency-note {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
     margin: 0;
+    line-height: 1.3;
 }
 
-/* -------------------------------------- */
-/* SECCIÓN DE NOTICIAS/CARRUSEL (news-carousel / carousel-section) */
-/* -------------------------------------- */
 
-.news-carousel, .carousel-section { /* Aliasing para soportar JSX */
-  padding: 100px 0;
-  background-color: var(--dark-bg);
-  color: var(--white);
+/* ------------------------------------------------------------------- */
+/* 3. SECCIÓN DE ENTIDADES COLABORADORAS (Sin cambios significativos) */
+/* ------------------------------------------------------------------- */
+
+.entities-section {
+    padding: 60px 0;
+    background-color: white;
 }
 
-.news-carousel .section-title, .carousel-section .section-title {
-  color: var(--white);
+.entity-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 30px;
+}
+
+.entity-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.entity-item:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+.entity-logo-container {
+    width: 80px;
+    height: 80px;
+    background-color: var(--clean-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+}
+
+.entity-logo {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.entity-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--safety-blue);
+    margin-bottom: 5px;
+}
+
+.entity-description {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+}
+
+.entity-link {
+    color: var(--emergency-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+/* ------------------------------------------------------------------- */
+/* 4. Carrusel de situaciones */
+/* ------------------------------------------------------------------- */
+
+.carousel-section {
+    padding: 80px 0;
+    background-color: var(--dark-bg);
+    color: white;
+}
+
+.carousel-section .section-title {
+    color: white;
 }
 
 .carousel-container {
-  max-width: 1200px;
-  margin: 0 auto;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .carousel-slide {
-  position: relative;
-  height: 600px;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-/* La imagen es ahora el hijo directo del slide */
-.carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.carousel-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-  color: var(--white);
-  padding: 40px;
-  text-align: left;
-}
-
-.carousel-caption h3 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  max-width: 600px;
-}
-
-/* Personalización del carrusel slick */
-.slick-prev, .slick-next {
-  z-index: 10;
-  width: 50px;
-  height: 50px;
-}
-.slick-prev:before, .slick-next:before {
-  font-size: 30px;
-  color: var(--light-blue);
-}
-.slick-dots li button:before {
-  font-size: 12px;
-  color: var(--light-blue);
-}
-.slick-dots li.slick-active button:before {
-  color: var(--emergency-red);
-}
-
-
-/* -------------------------------------- */
-/* SECCIÓN DE CONTACTOS DE EMERGENCIA (emergency-contacts) - NO USADA EN JSX ACTUAL, PERO SE MANTIENE POR SI ACASO */
-/* -------------------------------------- */
-
-.emergency-contacts {
-    background-color: var(--clean-white);
-    padding: 100px 0;
-}
-
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.contact-card {
-    background-color: var(--white);
-    border-radius: 12px;
+    position: relative;
+    height: 500px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-top: 5px solid var(--safety-blue);
+    border-radius: 10px;
 }
 
-.contact-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-.contact-card img {
+.carousel-slide img {
     width: 100%;
-    height: 180px;
+    height: 100%;
     object-fit: cover;
 }
 
-.contact-card h3 {
-    color: var(--safety-blue);
-    font-size: 1.5rem;
-    margin: 1rem 0 0.5rem 0;
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    color: white;
+    padding: 30px;
+    text-align: left;
 }
 
-.contact-card p {
-    color: #6c757d;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+.carousel-caption h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
 }
 
-.btn-chat {
-    display: block;
-    background-color: var(--emergency-red);
-    color: var(--white);
-    padding: 0.75rem 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    border: none;
-    border-radius: 0 0 12px 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+/* ------------------------------------------------------------------- */
+/* 5. SECCIÓN DE DESCARGA DE APP */
+/* ------------------------------------------------------------------- */
 
-.btn-chat:hover {
-    background-color: #d62839;
-}
-
-
-/* -------------------------------------- */
-/* SECCIÓN DESCARGA DE APP (download-app / download-app-section) - REVISADO */
-/* -------------------------------------- */
-
-.download-app, .download-app-section { /* Aliasing para soportar JSX */
-    padding: 100px 0;
+.download-app-section {
+    padding: 80px 0;
     background-color: var(--clean-white);
 }
 
@@ -476,56 +357,6 @@ body {
     display: flex;
     align-items: center;
     gap: 50px;
-}
-
-/* Nuevas clases para la estructura de QR */
-.qr-code-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.qr-code-card {
-    background-color: var(--white);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.qr-code-img, .qr-code-image { /* Aliasing para soportar JSX */
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px;
-}
-
-.scan-text {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--safety-blue);
-    margin: 0;
-    text-transform: uppercase;
-}
-/* Fin de nuevas clases para QR */
-
-.app-badges {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.app-badge {
-    height: 50px;
-    width: auto;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.app-badge:hover {
-    transform: scale(1.05);
 }
 
 .download-text {
@@ -539,13 +370,6 @@ body {
     margin-bottom: 20px;
 }
 
-.download-description {
-    font-size: 1.1rem;
-    color: #495057;
-    margin-bottom: 30px;
-    line-height: 1.7;
-}
-
 .features-list {
     list-style: none;
     padding: 0;
@@ -554,7 +378,7 @@ body {
 
 .features-list li {
     margin-bottom: 15px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #343a40;
     display: flex;
     align-items: center;
@@ -563,334 +387,122 @@ body {
 .features-list li i {
     margin-right: 15px;
     color: var(--emergency-red);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     width: 25px;
     text-align: center;
 }
 
+.qr-code-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
 
-/* -------------------------------------- */
-/* LLAMADO A LA ACCIÓN FINAL (CTA) */
-/* -------------------------------------- */
+.qr-code-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 300px;
+}
+
+.qr-code-image {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 15px;
+}
+
+.scan-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--safety-blue);
+    margin-bottom: 20px;
+}
+
+.app-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.app-badge {
+    height: 40px;
+    width: auto;
+}
+
+/* ------------------------------------------------------------------- */
+/* 6. CTA Section */
+/* ------------------------------------------------------------------- */
 
 .cta-section {
-    padding: 80px 20px;
-    background: linear-gradient(135deg, var(--alert-orange) 0%, var(--emergency-red) 100%);
-    color: var(--white);
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f77f00 0%, var(--emergency-red) 100%);
+    color: white;
     text-align: center;
 }
 
 .cta-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: 800;
-}
-
-.cta-section p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 .btn-register {
-    background-color: var(--white);
+    background-color: white;
     color: var(--emergency-red);
-    padding: 18px 40px;
-    font-size: 1.2rem;
+    padding: 15px 35px;
+    font-size: 1.1rem;
     font-weight: 700;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     text-decoration: none;
     display: inline-block;
+    margin-top: 20px;
 }
 
-.btn-register:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-}
-
-/* -------------------------------------- */
-/* SECCIONES ADICIONALES DEL NUEVO ESTILO (Disasters y Entities) - No usadas en JSX actual, pero se mantienen */
-/* -------------------------------------- */
-
-.disaster-types-section {
-  padding: 100px 0;
-  background-color: var(--clean-white);
-}
-
-.disaster-logos {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 50px;
-}
-
-.disaster-item {
-  flex: 1;
-  min-width: 250px;
-  max-width: 300px;
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  text-decoration: none;
-  color: inherit;
-}
-
-.disaster-item:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-.disaster-image-container {
-  height: 200px;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.disaster-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: all 0.4s ease;
-}
-
-.disaster-item:hover .disaster-image {
-  transform: scale(1.05);
-}
-
-.disaster-content {
-  padding: 25px;
-  text-align: center;
-}
-
-.disaster-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--safety-blue);
-  transition: all 0.3s ease;
-}
-
-.disaster-item:hover .disaster-name {
-  color: var(--emergency-red);
-}
-
-.disaster-desc {
-  font-size: 1.05rem;
-  color: #6c757d;
-  line-height: 1.5;
-}
-
-.entities-section {
-  padding: 100px 0;
-  background-color: var(--white);
-}
-
-.entity-logos {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-}
-
-.entity-item {
-  flex: 1;
-  min-width: 300px;
-  max-width: 350px;
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-}
-
-.entity-item:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-.entity-logo-container {
-  height: 200px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-}
-
-.entity-logo {
-  max-width: 100%;
-  max-height: 140px;
-  object-fit: contain;
-  filter: grayscale(30%);
-  opacity: 0.9;
-  transition: all 0.4s ease;
-}
-
-.entity-item:hover .entity-logo {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.entity-content {
-  padding: 30px;
-  text-align: center;
-}
-
-.entity-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  color: var(--safety-blue);
-}
-
-.entity-description {
-  font-size: 1rem;
-  color: #6c757d;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.entity-link {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: var(--safety-blue);
-  color: var(--white);
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.entity-link:hover {
-  background-color: var(--emergency-red);
-  transform: translateY(-2px);
-}
-
-
-/* -------------------------------------- */
-/* MEDIA QUERIES (RESPONSIVE) */
-/* -------------------------------------- */
+/* ------------------------------------------------------------------- */
+/* RESPONSIVE */
+/* ------------------------------------------------------------------- */
 
 @media (max-width: 992px) {
-  .intro-title {
-    font-size: 2.2rem;
-  }
-  
-  .download-container {
-    flex-direction: column;
-  }
-  
-  .qr-code-card {
-    margin-bottom: 40px;
-  }
+    .download-container {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    padding: 80px 20px;
-  }
-  
-  .intro-title {
-    font-size: 1.8rem;
-  }
-  
-  .section-title {
-    font-size: 1.8rem;
-  }
-  
-  .hero-buttons {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .btn-primary, .btn-secondary, .btn-project, .btn-emergency {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-  
-  .carousel-slide {
-    height: 400px;
-  }
-  
-  .carousel-caption h3 {
-    font-size: 1.5rem;
-  }
-  
-  .cta-section h2 {
-    font-size: 2rem;
-  }
-
-  .disaster-item, .report-button {
-    min-width: 100%;
-    max-width: 100%;
-  }
-
-  .entity-item {
-    min-width: 100%;
-    max-width: 100%;
-  }
-
-  .report-header {
-      margin-bottom: 30px;
-  }
-
-  .report-main-title {
-      font-size: 2.2rem;
-  }
-
-  .report-subtitle {
-      font-size: 1.2rem;
-  }
-
-  .report-icon-container {
-      margin-right: 15px;
-      min-width: 50px;
-      height: 50px;
-  }
+    .intro-title {
+        font-size: 2.2rem;
+    }
+    .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .entity-logos {
+        flex-direction: column;
+        align-items: center;
+    }
+    .carousel-slide {
+        height: 300px;
+    }
+    .carousel-caption h3 {
+        font-size: 1.3rem;
+    }
 }
 
 @media (max-width: 576px) {
-  .carousel-slide {
-    height: 300px;
-  }
-  
-  .carousel-caption {
-    padding: 20px;
-  }
-  
-  .carousel-caption h3 {
-    font-size: 1.2rem;
-  }
-
-  .report-button {
-      flex-direction: column;
-      text-align: center;
-  }
-
-  .report-icon-container {
-      margin: 0 0 10px 0;
-  }
-
-  .report-content {
-      text-align: center;
-  }
-
-  .report-arrow {
-      display: none; /* Ocultar flecha en móviles pequeños */
-  }
+    .intro-title {
+        font-size: 1.8rem;
+    }
+    .disaster-report-grid {
+        grid-template-columns: 1fr;
+    }
+    .btn-mobile-immediate {
+        font-size: 1rem;
+    }
 }
