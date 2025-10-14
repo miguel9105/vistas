@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState, useRef } from 'react';
-import './UserProfile.css'; // Asegura que tu CSS exista
+
+import './UserProfile.css';
+import MainLayout from '../Layouts/MainLayout';
 import { FaCamera, FaImage, FaTrash, FaUser, FaCheckCircle } from 'react-icons/fa'; // Íconos de Font Awesome
 import axios from 'axios';
 import { router } from '@inertiajs/react';
 
 // URL de tu API externa en Railway
 const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
+
 
 const videos = [
   '/videos/derrumbe.mp4',
@@ -174,6 +177,7 @@ const UserProfile = () => {
   }
 
   return (
+    <MainLayout>
     <div className="video-profile-wrapper">
       <video key={currentVideo} autoPlay loop muted className="background-video">
         <source src={videos[currentVideo]} type="video/mp4" />
@@ -271,6 +275,7 @@ const UserProfile = () => {
         </form>
       </div>
     </div>
+    </MainLayout>
   );
 };
 

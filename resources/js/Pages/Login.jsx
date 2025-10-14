@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import MainLayout from '../Layouts/MainLayout'; // Asegura que esta ruta exista
+
+import React, { useEffect, useState, useRef } from 'react';
+import MainLayout from '../Layouts/MainLayout';
+import { Link } from '@inertiajs/react';
+import './Login.css';
+
 import { Link, router } from '@inertiajs/react';
 import axios from 'axios';
-import './Login.css'; // Asegura que tu CSS exista
+
 
 // URL de tu API externa en Railway
 const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
@@ -15,18 +19,44 @@ const videos = [
 ];
 
 const Login = () => {
-  const [currentVideo, setCurrentVideo] = useState(0);
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  // 🚨 1. CREAR UNA REFERENCIA para el elemento <video>
+  const videoRef = useRef(null); 
   const [data, setData] = useState({ email: '', password: '', remember: false });
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
 
-  // Cambia el video cada 10 segundos
+
+  // 🚨 2. EFECTO: Cambia el índice del video cada 10 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentVideo((prev) => (prev + 1) % videos.length);
-    }, 10000);
+      setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+    }, 10000); // 10 segundos
+    
     return () => clearInterval(interval);
   }, []);
+
+
+  // 🚨 3. EFECTO: Carga y reproduce el nuevo video cuando el índice cambia
+  useEffect(() => {
+    if (videoRef.current) {
+      // Forzar la carga de la nueva fuente
+      videoRef.current.load(); 
+      
+      // Intentar reproducir (devuelve una Promesa, por eso el .catch)
+      videoRef.current.play().catch(error => {
+        // Esto es común si el navegador bloquea el autoplay. 
+        // Como ya tiene 'muted', es probable que sea un problema de carga.
+        console.warn("Error al intentar reproducir el video:", error);
+      });
+    }
+  }, [currentVideoIndex]); // Se ejecuta cada vez que 'currentVideoIndex' cambia
+
+  // Función para manejar el envío del formulario
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Simulación de inicio de sesión');
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -67,6 +97,7 @@ const Login = () => {
         alert(error.response?.data?.message || 'Error al iniciar sesión. Verifica tus credenciales.');
       }
     }
+
   };
 
   return (
@@ -74,17 +105,24 @@ const Login = () => {
       <div className="video-login-wrapper">
         {/* Video de fondo */}
         <video
-          key={currentVideo}
+          // 🚨 4. ASIGNAR LA REFERENCIA
+          ref={videoRef}
+          
+          // Mantenemos la key para asegurar el re-renderizado
+          key={currentVideoIndex} 
+          
           autoPlay
           loop
-          muted
+          muted // Esencial para el autoplay
+          playsInline // Mejora la compatibilidad móvil
           className="background-video"
         >
-          <source src={videos[currentVideo]} type="video/mp4" />
+          {/* 🚨 USAMOS EL ÍNDICE DEL ESTADO PARA SELECCIONAR LA FUENTE */}
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
           Tu navegador no soporta el video.
         </video>
 
-        {/* Formulario */}
+        {/* Formulario (La estructura se mantiene intacta) */}
         <div className="login-container">
           <h2>Iniciar sesión</h2>
           <p>Escribe tu correo y contraseña</p>

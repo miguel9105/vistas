@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Register.css'; // Asegura que tu CSS exista
+
+import './Register.css';
+import MainLayout from '../Layouts/MainLayout';
+import { FaUser } from 'react-icons/fa'; // Instala si no lo tienes con: npm install react-icons
+
+
 import { FaUser } from 'react-icons/fa'; // Importa el ícono de usuario
 import axios from 'axios';
 import { router, Link } from '@inertiajs/react';
 
 // URL de tu API externa en Railway
 const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
+
 
 const videos = [
   '/videos/derrumbe.mp4',
@@ -88,6 +94,7 @@ const Register = () => {
   };
 
   return (
+    <MainLayout>
     <div className="video-register-wrapper">
       <video
         key={currentVideo}
@@ -195,7 +202,9 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </MainLayout>
   );
+  
 };
 
 export default Register;
