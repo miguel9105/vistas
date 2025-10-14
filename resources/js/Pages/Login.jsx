@@ -1,10 +1,8 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import MainLayout from '../Layouts/MainLayout';
-import { Link } from '@inertiajs/react';
-import './Login.css';
-
 import { Link, router } from '@inertiajs/react';
+import './Login.css';
 import axios from 'axios';
 
 
@@ -176,7 +174,9 @@ const Login = () => {
         </div>
       </div>
     </MainLayout>
+  
   );
+}
 };
 
 export default Login;
