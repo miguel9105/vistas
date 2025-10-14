@@ -45,6 +45,7 @@ Route::get('/perfil', function () {
     return Inertia::render('UserProfile'); // Necesita crear Perfil.jsx
 })->name('perfil');
 
-Route::get('/registro', function () {
-    return Inertia::render('Register'); // Necesita crear Registro.jsx
-})->name('registro');
+// 6. REGISTRO (Nueva ruta añadida para conectar Login.jsx con Register.jsx)
+Route::get('/register', function () {
+    return Inertia::render('Register'); // Apunta a resources/js/Pages/Register.jsx
+})->name('register');
