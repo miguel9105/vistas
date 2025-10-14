@@ -22,7 +22,7 @@ const MainLayout = ({ children }) => {
             rootElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             // 🚨 AJUSTE EN EL CSS GLOBAL PARA MANEJAR EL FONDO DE LA PÁGINA:
-            // Asegúrate de que tu `body` o `html` en `app.css` tenga el fondo deseado 
+            // Asegúrate de que tu body o html en app.css tenga el fondo deseado 
             // O déjalo transparente para que el video se vea.
         } else {
             rootElement.classList.remove('dark');

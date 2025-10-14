@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import './Register.css';
 import MainLayout from '../Layouts/MainLayout';
-import { FaUser } from 'react-icons/fa'; // Instala si no lo tienes con: npm install react-icons
+import { FaUser } from 'react-icons/fa'; // Importa el ícono de usuario (Asegúrate de tenerlo instalado: npm install react-icons)
 
+// NOTA: Se ha eliminado la importación de axios y la conexión con la API y Inertia.
 
-import { FaUser } from 'react-icons/fa'; // Importa el ícono de usuario
-import axios from 'axios';
-import { router, Link } from '@inertiajs/react';
-
-// URL de tu API externa en Railway
-const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
+// URL de la API eliminada
+// const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
 
 
 const videos = [
@@ -31,9 +28,11 @@ const Register = () => {
     password_confirmation: '',
     foto: null,
   });
-  const [errors, setErrors] = useState({});
-  const [processing, setProcessing] = useState(false);
+  // Se ha eliminado el estado de errores de la API
+  // const [errors, setErrors] = useState({});
+  const [processing, setProcessing] = useState(false); // Se mantiene para simular un envío
 
+  // Efecto para cambiar el video de fondo cada 10 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentVideo((prev) => (prev + 1) % videos.length);
@@ -41,6 +40,7 @@ const Register = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Maneja la selección de imagen para la vista previa
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,49 +49,53 @@ const Register = () => {
     }
   };
 
+  // Simula el click en el input de archivo al hacer click en el círculo
   const handleCircleClick = () => {
     if (!processing) {
-        fileInputRef.current.click();
+      fileInputRef.current.click();
     }
   };
   
+  // Maneja el cambio de valores en los inputs del formulario
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  /**
+   * NOTA: Función handleSubmit modificada.
+   * Se ha eliminado toda la lógica de conexión con axios y el manejo de errores/redirección de Inertia.
+   * Ahora solo simula un proceso de envío y muestra una alerta.
+   */
+  const handleSubmit = (e) => {
     e.preventDefault();
     setProcessing(true);
-    setErrors({});
+    // setErrors({}); // Eliminado
 
-    // 1. Crear objeto FormData para enviar datos y la foto
+    // Simular envío de datos
+    console.log('Datos a enviar (simulación):', form);
+
+    // Simular un retardo para mostrar el estado de "Registrando..."
+    setTimeout(() => {
+        setProcessing(false);
+        alert('¡Formulario simulado enviado! (La conexión a la API está deshabilitada)');
+        // router.visit(route('login')); // Eliminado
+    }, 1500);
+
+    // Lógica original de axios eliminada:
+    /*
     const formData = new FormData();
-    formData.append('nombre', form.nombre);
-    formData.append('email', form.email);
-    formData.append('telefono', form.telefono);
-    formData.append('password', form.password);
-    formData.append('password_confirmation', form.password_confirmation);
-    
-    if (form.foto) {
-        formData.append('foto', form.foto); 
-    }
-
+    // ... append form fields ...
     try {
-      // 2. Petición POST a tu endpoint de Register con FormData
       await axios.post(`${API_BASE_URL}/register`, formData);
-
-      alert('¡Registro exitoso! Por favor, inicia sesión.');
-      router.visit(route('login')); // Redirigir a la vista de login con Inertia
-
+      // ... success logic ...
     } catch (error) {
-      setProcessing(false);
-      if (error.response && error.response.data && error.response.data.errors) {
-        setErrors(error.response.data.errors);
-      } else {
-        alert(error.response?.data?.message || 'Error al registrar. Revisa tus datos e intenta de nuevo.');
-      }
+      // ... error logic ...
     }
+    */
   };
+
+  // Se mantiene el estado `errors` localmente para evitar errores de referencia
+  const errors = {}; 
 
   return (
     <MainLayout>
@@ -198,7 +202,8 @@ const Register = () => {
         </form>
 
         <div className="register-footer">
-          ¿Ya tienes cuenta? <Link href={route('login')}>Entrar</Link>
+          {/* Se cambió el componente <Link> de Inertia por un <a> simple */}
+          ¿Ya tienes cuenta? <a href="/login">Entrar</a>
         </div>
       </div>
     </div>

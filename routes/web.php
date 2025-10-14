@@ -47,9 +47,9 @@ Route::get('/perfil', function () {
 })->name('perfil');
 
 
-Route::get('/registro', function () {
-    return Inertia::render('Register'); // Necesita crear Registro.jsx
-})->name('registro');
+// Route::get('/registro', function () {
+//     return Inertia::render('Register'); // Necesita crear Registro.jsx
+// })->name('registro');
 // RUTA NECESARIA: Muestra la vista de todas las publicaciones (Buzón)
 Route::get('/publicaciones', function () {
     // Esta ruta renderiza el componente AllPublicationsPage

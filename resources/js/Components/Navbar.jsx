@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@inertiajs/react'; 
-// Eliminamos el import './Navbar.css';
+
 import { FaHome, FaEnvelope, FaPlus, FaComments, FaUsers, FaSignInAlt, FaUserCircle, FaMoon, FaSun } from 'react-icons/fa';
 
 // La Navbar ahora recibe el estado y el alternador de MainLayout
