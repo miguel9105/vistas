@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState, useRef } from 'react';
 import './UserProfile.css';
+import MainLayout from '../Layouts/MainLayout';
 import { FaCamera, FaImage, FaTrash, FaUser, FaCheckCircle } from 'react-icons/fa';
 
 const videos = [
@@ -92,6 +93,7 @@ const UserProfile = () => {
   };
 
   return (
+    <MainLayout>
     <div className="video-profile-wrapper">
       <video key={currentVideo} autoPlay loop muted className="background-video">
         <source src={videos[currentVideo]} type="video/mp4" />
@@ -178,6 +180,7 @@ const UserProfile = () => {
         </form>
       </div>
     </div>
+    </MainLayout>
   );
 };
 

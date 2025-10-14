@@ -123,7 +123,8 @@ const Home = () => {
                                 <i className="fas fa-siren-on mr-3"></i> REPORTAR EMERGENCIA
                             </Link>
                             <Link
-                                href="#"
+                                // CAMBIO REALIZADO AQUÍ: dirigiéndolo a la ruta /conocenos
+                                href="/conocenos"
                                 className="px-8 py-4 text-base sm:text-lg font-bold rounded-lg transition duration-300 no-underline
                                             bg-transparent text-white border-2 border-white hover:bg-white hover:text-blue-900 uppercase"
                             >

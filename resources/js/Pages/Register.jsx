@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Register.css';
+import MainLayout from '../Layouts/MainLayout';
 import { FaUser } from 'react-icons/fa'; // Instala si no lo tienes con: npm install react-icons
 
 const videos = [
@@ -32,6 +33,7 @@ const Register = () => {
   };
 
   return (
+    <MainLayout>
     <div className="video-register-wrapper">
       <video
         key={currentVideo}
@@ -89,7 +91,9 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </MainLayout>
   );
+  
 };
 
 export default Register;
