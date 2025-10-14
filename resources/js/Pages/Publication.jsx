@@ -294,7 +294,6 @@ export const Publication = () => {
     </div>
   );
 };
-import React, { useState, useEffect } from 'react';
 import MainLayout from '../Layouts/MainLayout';
 import './Publication.css';
 
