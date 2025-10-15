@@ -1,3 +1,5 @@
+// src/pages/Login.jsx
+
 import React, { useEffect, useState, useRef } from 'react';
 import MainLayout from '../Layouts/MainLayout';
 import { Link, router } from '@inertiajs/react';
@@ -17,35 +19,31 @@ const videos = [
 const Login = () => {
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  // 🚨 1. CREAR UNA REFERENCIA para el elemento <video>
   const videoRef = useRef(null); 
   const [data, setData] = useState({ email: '', password: '', remember: false });
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
 
 
-  // 🚨 2. EFECTO: Cambia el índice del video cada 10 segundos
+  // EFECTO: Cambia el índice del video cada 10 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
-    }, 10000); // 10 segundos
+    }, 10000); 
     
     return () => clearInterval(interval);
   }, []);
 
 
-  // 🚨 3. EFECTO: Carga y reproduce el nuevo video cuando el índice cambia
+  // EFECTO: Carga y reproduce el nuevo video cuando el índice cambia
   useEffect(() => {
     if (videoRef.current) {
-      // Forzar la carga de la nueva fuente
       videoRef.current.load(); 
-      
-      // Intentar reproducir (devuelve una Promesa, por eso el .catch)
       videoRef.current.play().catch(error => {
         console.warn("Error al intentar reproducir el video:", error);
       });
     }
-  }, [currentVideoIndex]); // Se ejecuta cada vez que 'currentVideoIndex' cambia
+  }, [currentVideoIndex]);
 
 
   // Función para manejar los cambios en los inputs
@@ -58,14 +56,14 @@ const Login = () => {
   };
 
   // Función para manejar el envío del formulario y conectar a la API
-  const handleSubmit = async (e) => { // <-- ONLY ONE handleSubmit DEFINITION
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     setProcessing(true);
     setErrors({});
 
     try {
-      // Petición POST a tu endpoint de Login en la API externa
-      const response = await axios.post(`${API_BASE_URL}/login`, {
+      // CORRECCIÓN DEL ENDPOINT: Petición POST a /users/login
+      const response = await axios.post(`${API_BASE_URL}/users/login`, {
         email: data.email,
         password: data.password,
       });
@@ -74,46 +72,40 @@ const Login = () => {
       const { token } = response.data;
       localStorage.setItem('auth_token', token);
       
-      // 2. Redirigir con Inertia (asume que la ruta /dashboard existe localmente)
-      router.visit('/dashboard'); 
+      // 2. Redirigir con Inertia
+      router.visit('/dashboard');
       
     } catch (error) {
       setProcessing(false);
       if (error.response && error.response.data && error.response.data.errors) {
-        // Errores de validación de Laravel (si la API usa el mismo formato)
+        // Errores de validación de Laravel
         setErrors(error.response.data.errors);
       } else {
         // Error genérico o de credenciales
-        // Usamos una alerta para informar del fallo
         alert(error.response?.data?.message || 'Error al iniciar sesión. Verifica tus credenciales.');
       }
     }
 
-  }; // <-- CLOSING THE Login COMPONENT'S MAIN FUNCTION BODY
+  }; 
 
-  return ( // <-- NOW INSIDE THE COMPONENT
+  return ( 
     <MainLayout>
       <div className="video-login-wrapper">
         {/* Video de fondo */}
         <video
-          // 🚨 4. ASIGNAR LA REFERENCIA
           ref={videoRef}
-          
-          // Mantenemos la key para asegurar el re-renderizado
           key={currentVideoIndex} 
-          
           autoPlay
           loop
-          muted // Esencial para el autoplay
-          playsInline // Mejora la compatibilidad móvil
+          muted 
+          playsInline 
           className="background-video"
         >
-          {/* 🚨 USAMOS EL ÍNDICE DEL ESTADO PARA SELECCIONAR LA FUENTE */}
           <source src={videos[currentVideoIndex]} type="video/mp4" />
           Tu navegador no soporta el video.
         </video>
 
-        {/* Formulario (La estructura se mantiene intacta) */}
+        {/* Formulario */}
         <div className="login-container">
           <h2>Iniciar sesión</h2>
           <p>Escribe tu correo y contraseña</p>

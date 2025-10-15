@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/pages/Register.jsx
+
+import React, { useState, useEffect } from 'react';
+import { router } from '@inertiajs/react';
+import axios from 'axios';
 
 import './Register.css';
 import MainLayout from '../Layouts/MainLayout';
-import { FaUser } from 'react-icons/fa'; // Importa el ícono de usuario (Asegúrate de tenerlo instalado: npm install react-icons)
 
-// NOTA: Se ha eliminado la importación de axios y la conexión con la API y Inertia.
-
-// URL de la API eliminada
-// const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
-
+// URL de tu API externa en Railway
+const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
 
 const videos = [
   '/videos/derrumbe.mp4',
@@ -17,20 +17,19 @@ const videos = [
 ];
 
 const Register = () => {
-  const [preview, setPreview] = useState(null);
   const [currentVideo, setCurrentVideo] = useState(0);
-  const fileInputRef = useRef(null);
+  
+  // Estado para los campos del formulario según la tabla users
   const [form, setForm] = useState({
-    nombre: '',
+    firstname: '', 
+    lastname: '',  
     email: '',
-    telefono: '',
+    location: '',  
     password: '',
-    password_confirmation: '',
-    foto: null,
   });
-  // Se ha eliminado el estado de errores de la API
-  // const [errors, setErrors] = useState({});
-  const [processing, setProcessing] = useState(false); // Se mantiene para simular un envío
+
+  const [errors, setErrors] = useState({}); // Para errores de validación del backend
+  const [processing, setProcessing] = useState(false); 
 
   // Efecto para cambiar el video de fondo cada 10 segundos
   useEffect(() => {
@@ -39,22 +38,6 @@ const Register = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
-
-  // Maneja la selección de imagen para la vista previa
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setForm(prev => ({ ...prev, foto: file })); // Guardar el objeto File
-    }
-  };
-
-  // Simula el click en el input de archivo al hacer click en el círculo
-  const handleCircleClick = () => {
-    if (!processing) {
-      fileInputRef.current.click();
-    }
-  };
   
   // Maneja el cambio de valores en los inputs del formulario
   const handleChange = (e) => {
@@ -62,40 +45,45 @@ const Register = () => {
   };
 
   /**
-   * NOTA: Función handleSubmit modificada.
-   * Se ha eliminado toda la lógica de conexión con axios y el manejo de errores/redirección de Inertia.
-   * Ahora solo simula un proceso de envío y muestra una alerta.
+   * FUNCIÓN ACTUALIZADA: Conexión al endpoint de registro /users
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
-    // setErrors({}); // Eliminado
+    setErrors({}); // Limpiar errores previos
 
-    // Simular envío de datos
-    console.log('Datos a enviar (simulación):', form);
-
-    // Simular un retardo para mostrar el estado de "Registrando..."
-    setTimeout(() => {
-        setProcessing(false);
-        alert('¡Formulario simulado enviado! (La conexión a la API está deshabilitada)');
-        // router.visit(route('login')); // Eliminado
-    }, 1500);
-
-    // Lógica original de axios eliminada:
-    /*
-    const formData = new FormData();
-    // ... append form fields ...
     try {
-      await axios.post(`${API_BASE_URL}/register`, formData);
-      // ... success logic ...
+      // Endpoint de Registro: POST a /users (del apiResource)
+      const response = await axios.post(`${API_BASE_URL}/users`, {
+        firstname: form.firstname,
+        lastname: form.lastname,
+        email: form.email,
+        location: form.location,
+        password: form.password,
+      });
+
+      console.log('Registro exitoso:', response.data);
+      alert('¡Registro exitoso! Serás redirigido para iniciar sesión.');
+      
+      // Redirigir al login
+      router.visit('/login');
+
     } catch (error) {
-      // ... error logic ...
+      setProcessing(false);
+      if (error.response) {
+          if (error.response.data.errors) {
+            // Errores de validación de Laravel
+            setErrors(error.response.data.errors);
+          } else {
+            // Otros errores del API (p.ej., el correo ya existe, error de servidor)
+            alert(error.response.data.message || 'Ocurrió un error al registrarse. Intenta de nuevo.');
+          }
+      } else {
+          alert('Error de conexión con la API.');
+      }
     }
-    */
   };
 
-  // Se mantiene el estado `errors` localmente para evitar errores de referencia
-  const errors = {}; 
 
   return (
     <MainLayout>
@@ -116,18 +104,35 @@ const Register = () => {
         <p>Llene los datos para crear tu cuenta</p>
 
         <form className="register-form" onSubmit={handleSubmit}>
+          
+          {/* Campo 'firstname' */}
           <label>Nombre</label>
           <input 
             type="text" 
-            placeholder="Nombre completo" 
+            placeholder="Nombre" 
             required 
-            name="nombre" 
-            value={form.nombre}
+            name="firstname" 
+            value={form.firstname}
             onChange={handleChange}
             disabled={processing}
           />
-          {errors.nombre && <div style={{ color: 'red' }}>{errors.nombre}</div>}
+          {errors.firstname && <div style={{ color: 'red' }}>{errors.firstname}</div>}
 
+          {/* Campo 'lastname' */}
+          <label>Apellido</label>
+          <input 
+            type="text" 
+            placeholder="Apellido" 
+            required 
+            name="lastname" 
+            value={form.lastname}
+            onChange={handleChange}
+            disabled={processing}
+          />
+          {errors.lastname && <div style={{ color: 'red' }}>{errors.lastname}</div>}
+
+
+          {/* Campo 'email' */}
           <label>Correo</label>
           <input 
             type="email" 
@@ -140,18 +145,21 @@ const Register = () => {
           />
           {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
 
-          <label>Teléfono</label>
+          {/* Campo 'location' */}
+          <label>Ubicación</label>
           <input 
-            type="tel" 
-            placeholder="Número celular" 
+            type="text" 
+            placeholder="Ciudad o País" 
             required 
-            name="telefono" 
-            value={form.telefono}
+            name="location" 
+            value={form.location}
             onChange={handleChange}
             disabled={processing}
           />
-          {errors.telefono && <div style={{ color: 'red' }}>{errors.telefono}</div>}
+          {errors.location && <div style={{ color: 'red' }}>{errors.location}</div>}
 
+
+          {/* Campo 'password' */}
           <label>Contraseña</label>
           <input 
             type="password" 
@@ -164,45 +172,12 @@ const Register = () => {
           />
           {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
 
-          <label>Repetir contraseña</label>
-          <input 
-            type="password" 
-            placeholder="******" 
-            required 
-            name="password_confirmation" 
-            value={form.password_confirmation}
-            onChange={handleChange}
-            disabled={processing}
-          />
-          {errors.password_confirmation && <div style={{ color: 'red' }}>{errors.password_confirmation}</div>}
-
-          <label>Foto de tu rostro</label>
-          <div className="circle-image" onClick={handleCircleClick}>
-            {preview ? (
-              <img src={preview} alt="Foto" />
-            ) : (
-              <FaUser className="default-user-icon" />
-            )}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            style={{ display: 'none' }}
-            onChange={handleImageChange}
-            required
-            disabled={processing}
-          />
-          {errors.foto && <div style={{ color: 'red' }}>{errors.foto}</div>}
-
-
           <button type="submit" disabled={processing}>
             {processing ? 'Registrando...' : 'Crear cuenta'}
           </button>
         </form>
 
         <div className="register-footer">
-          {/* Se cambió el componente <Link> de Inertia por un <a> simple */}
           ¿Ya tienes cuenta? <a href="/login">Entrar</a>
         </div>
       </div>
