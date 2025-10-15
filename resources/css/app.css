@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.filter-red-icon {
+    filter: invert(39%) sepia(87%) saturate(5425%) hue-rotate(345deg) brightness(85%) contrast(100%);
+}
