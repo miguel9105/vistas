@@ -2,12 +2,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './UserProfile.css';
 import MainLayout from '../Layouts/MainLayout';
-// Importamos 'router' pero ya no lo usamos para redirecciones por API error
-import { FaCamera, FaImage, FaTrash, FaUser, FaCheckCircle } from 'react-icons/fa'; // Íconos de Font Awesome
-// import axios from 'axios'; // 🚫 REMOVED: No more API connection
-// import { router } from '@inertiajs/react'; // 🚫 REMOVED: Inertia router is not strictly needed for this file after removing API logic
-
-// 🚫 REMOVED: API_BASE_URL is no longer needed
+// Importamos router
+import { router } from '@inertiajs/react'; 
+import { FaCamera, FaImage, FaTrash, FaUser, FaCheckCircle } from 'react-icons/fa'; 
 
 const videos = [
   '/videos/derrumbe.mp4',
@@ -15,7 +12,7 @@ const videos = [
   '/videos/tormenta.mp4'
 ];
 
-// LISTA DE VEREDAS DISPONIBLES (Descomentada para que funcione el select)
+// LISTA DE VEREDAS DISPONIBLES
 const veredasDisponibles = [
   'Vereda San Rafael', 'Vereda San Diego', 'Vereda El Triunfo', 'Vereda La Primavera',
   'Vereda El Rosal', 'Vereda La Esperanza', 'Vereda Los Pinos', 'Vereda San Antonio',
@@ -36,28 +33,40 @@ const UserProfile = () => {
     telefono: '3101234567',
     direccion: 'Calle 10 # 5-20',
     vereda: 'Vereda San Rafael',
-    password: '', // La contraseña debe ser vacía por seguridad
-    foto: null, // Guarda el objeto File o el string 'REMOVE'
+    password: '', 
+    foto: null, 
   });
   
-  const [preview, setPreview] = useState(null); // URL local o URL remota simulada
+  const [preview, setPreview] = useState(null); 
   const [currentVideo, setCurrentVideo] = useState(0);
   const [showConfirm, setShowConfirm] = useState(false);
   const [saved, setSaved] = useState(false);
   const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(false); // 💡 FALSE: No hay carga de API
-  const [processing, setProcessing] = useState(false); // Estado de envío
+  const [loading, setLoading] = useState(true); // 💡 TRUE: Inicia verificando sesión
+  const [processing, setProcessing] = useState(false); 
 
   const fileInputRef = useRef(null);
 
-  /* Fondo con cambio de video */
+  /* Fondo con cambio de video y Verificación de Acceso */
   useEffect(() => {
+    
+    // 1. Verificación de token
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      // Redirigir si no hay token
+      router.visit('/login'); 
+    } else {
+      // Si hay token, cargamos el perfil (simulado) y permitimos la vista
+      setLoading(false);
+    }
+
+    // 2. Efecto original de cambio de video
     const interval = setInterval(() => setCurrentVideo(v => (v + 1) % videos.length), 10000);
     return () => clearInterval(interval);
   }, []);
 
-  // 🚫 REMOVED: fetchUserData function (no more API)
-  // 🚫 REMOVED: useEffect for fetchUserData
+
+  // --- Handlers del formulario ---
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -69,13 +78,13 @@ const UserProfile = () => {
     if (file) {
       const url = URL.createObjectURL(file);
       setPreview(url);
-      setUserData(prev => ({ ...prev, foto: file })); // Guardar el objeto File para el envío
+      setUserData(prev => ({ ...prev, foto: file })); 
     }
   };
 
   const handleRemovePhoto = () => {
     setPreview(null);
-    setUserData(prev => ({ ...prev, foto: 'REMOVE' })); // Flag para eliminar
+    setUserData(prev => ({ ...prev, foto: 'REMOVE' })); 
   };
 
   // 💡 SIMULACIÓN: Lógica para "guardar" los cambios (sin API)
@@ -83,7 +92,7 @@ const UserProfile = () => {
     setShowConfirm(false);
     setProcessing(true);
 
-    // Aquí iría la lógica de API, pero la reemplazamos por un temporizador de simulación
+    // Aquí iría la lógica de API, la reemplazamos por un temporizador de simulación
     setTimeout(() => {
         console.log("Simulación de guardado. Datos actualizados localmente:", userData);
         
@@ -95,17 +104,18 @@ const UserProfile = () => {
         setProcessing(false);
         setTimeout(() => setSaved(false), 3000);
         
-    }, 1500); // Esperar 1.5 segundos para simular la petición
+    }, 1500); 
   };
 
   const enableEdit = () => {
     setEditable(true);
   };
 
+  // Muestra un estado de carga mientras verifica
   if (loading) {
     return (
         <div className="video-profile-wrapper">
-             <div className="loading-container" style={{ color: 'white', fontSize: '24px' }}>Cargando perfil...</div>
+             <div className="loading-container" style={{ color: 'white', fontSize: '24px' }}>Verificando sesión...</div>
         </div>
     );
   }

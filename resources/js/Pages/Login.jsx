@@ -62,18 +62,21 @@ const Login = () => {
     setErrors({});
 
     try {
-      // CORRECCIÓN DEL ENDPOINT: Petición POST a /users/login
+      // Petición POST a /users/login para validar credenciales
       const response = await axios.post(`${API_BASE_URL}/users/login`, {
         email: data.email,
         password: data.password,
       });
 
-      // 1. Guardar el token en localStorage
+      // 1. Guardar el token (opcional, para mantener el dato de la API)
       const { token } = response.data;
       localStorage.setItem('auth_token', token);
       
-      // 2. Redirigir con Inertia
-      router.visit('/dashboard');
+      // 2. ✅ CÓDIGO CLAVE: Establecer el flag de sesión simple para el frontend
+      localStorage.setItem('is_authenticated', 'true'); 
+      
+      // 3. Redirigir a Home
+      router.visit('/'); 
       
     } catch (error) {
       setProcessing(false);
@@ -91,27 +94,15 @@ const Login = () => {
   return ( 
     <MainLayout>
       <div className="video-login-wrapper">
-        {/* Video de fondo */}
-        <video
-          ref={videoRef}
-          key={currentVideoIndex} 
-          autoPlay
-          loop
-          muted 
-          playsInline 
-          className="background-video"
-        >
+        <video ref={videoRef} autoPlay loop muted className="background-video">
           <source src={videos[currentVideoIndex]} type="video/mp4" />
-          Tu navegador no soporta el video.
+          Tu navegador no soporta videos HTML5.
         </video>
-
-        {/* Formulario */}
+        
         <div className="login-container">
-          <h2>Iniciar sesión</h2>
-          <p>Escribe tu correo y contraseña</p>
-
-          <form className="login-form" onSubmit={handleSubmit}>
-            <label htmlFor='email'>Correo</label>
+          <h1>Bienvenido de nuevo</h1>
+          <form onSubmit={handleSubmit} className="login-form">
+            <label htmlFor='email'>Correo Electrónico</label>
             <input 
               type="email" 
               id="email" 
@@ -133,26 +124,23 @@ const Login = () => {
             />
             {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
 
-            <div className="login-options">
-              <div className="remember-me">
-                <input 
-                  type="checkbox" 
-                  id="remember" 
-                  checked={data.remember} 
-                  onChange={handleChange}
-                />
-                <label htmlFor="remember">Recordarme</label>
-              </div>
-              <Link href="/forgot-password" className="OLV">¿Olvidaste tu clave?</Link> 
+            <div className="remember-me">
+              <input 
+                type="checkbox" 
+                id="remember" 
+                checked={data.remember} 
+                onChange={handleChange} 
+              />
+              <label htmlFor="remember">Recuérdame</label>
             </div>
 
             <button type="submit" disabled={processing}>
-                {processing ? 'Cargando...' : 'Entrar'}
+              {processing ? 'Verificando...' : 'Iniciar Sesión'}
             </button>
           </form>
 
           <div className="login-footer">
-            ¿No tienes cuenta? <Link href="/register">Regístrate aquí</Link>
+            ¿No tienes cuenta? <Link href="/register">Crear cuenta</Link>
           </div>
         </div>
       </div>

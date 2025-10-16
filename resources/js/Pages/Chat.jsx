@@ -1,38 +1,45 @@
-import React from "react";
+// src/pages/Chat.jsx
+
+import React, { useEffect, useState } from "react"; 
 import MainLayout from '../Layouts/MainLayout';
-// Asumimos que estos componentes están listos o serán adaptados para Tailwind
+import { router } from '@inertiajs/react'; 
 import Sidebar from "../Components/Sidebar/Sidebar"; 
 import ChatWindow from "../Components/Chat/ChatWindow"; 
 
-// La prop 'chatId' se recibe del controlador de Laravel (routes/web.php)
 const Chat = ({ chatId }) => { 
-    // Si chatId no está definido, usamos "general" como activo por defecto
+    
+    const [loading, setLoading] = useState(true);
+
+    // 💡 LÓGICA DE VERIFICACIÓN DE SESIÓN SOLICITADA
+    useEffect(() => {
+        const isAuthenticated = localStorage.getItem('is_authenticated');
+        
+        if (isAuthenticated !== 'true') {
+            router.visit('/login'); // Redirige si no está autenticado
+        } else {
+            setLoading(false); // Permite la renderización del contenido
+        }
+    }, []); 
+
     const activeChat = chatId || "general"; 
+    
+    if (loading) {
+        return (
+            <MainLayout>
+                <div className="w-full h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 text-xl font-semibold">
+                    Verificando sesión. Por favor espere...
+                </div>
+            </MainLayout>
+        );
+    }
 
     return (
-        // El MainLayout debe proporcionar una estructura que permita al contenido interno
-        // (la página de chat) crecer y ocupar el espacio disponible.
         <MainLayout> 
-            {/* chat-page: Implementación de la vista de chat con Tailwind.
-              
-              1. w-full h-screen: Ocupa todo el ancho y alto visible (menos la navegación del MainLayout, si existe).
-              2. flex: Habilita el layout de barra lateral y ventana principal.
-              3. overflow-hidden: Esencial para evitar barras de desplazamiento no deseadas en el layout principal.
-              4. bg-gray-100: Fondo general de la aplicación, siguiendo el estilo.
-            */}
-            <div className="w-full h-screen flex overflow-hidden bg-gray-100">
-                
-                {/* Sidebar:
-                  - Asumimos que 'Sidebar' maneja su propio ancho fijo (ej. w-72).
-                  - La Sidebar generalmente tendrá 'overflow-y-auto' para poder hacer scroll en la lista de chats.
-                */}
+            <div className="w-full h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-800">
+                {/* Sidebar */}
                 <Sidebar activeChat={activeChat} /> 
                 
-                {/* ChatWindow:
-                  - flex-1: Ocupa todo el espacio restante disponible horizontalmente.
-                  - h-full: Ocupa todo el espacio vertical.
-                  - overflow-y-auto: Permite el desplazamiento vertical para el contenido del chat (mensajes).
-                */}
+                {/* ChatWindow */}
                 <div className="flex-1 h-full overflow-y-auto">
                     <ChatWindow chatId={activeChat} />
                 </div>
