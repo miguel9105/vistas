@@ -1,226 +1,338 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import './UserProfile.css';
 import MainLayout from '../Layouts/MainLayout';
-// Importamos router
-import { router } from '@inertiajs/react'; 
-import { FaCamera, FaImage, FaTrash, FaUser, FaCheckCircle } from 'react-icons/fa'; 
+// Importamos FaLock para el botón de cambio de contraseña
+import { FaUser, FaCheckCircle, FaLock } from 'react-icons/fa'; 
+import axios from 'axios';
+import { router } from '@inertiajs/react';
 
+// URL de tu API externa en Railway
+const API_BASE_URL = 'https://api10desas-production-bdfa.up.railway.app/api/v1';
+
+// ... [Variables de videos y veredas] ...
 const videos = [
-  '/videos/derrumbe.mp4',
-  '/videos/incendio.mp4',
-  '/videos/tormenta.mp4'
+    '/videos/derrumbe.mp4',
+    '/videos/incendio.mp4',
+    '/videos/tormenta.mp4'
 ];
 
-// LISTA DE VEREDAS DISPONIBLES
 const veredasDisponibles = [
-  'Vereda San Rafael', 'Vereda San Diego', 'Vereda El Triunfo', 'Vereda La Primavera',
-  'Vereda El Rosal', 'Vereda La Esperanza', 'Vereda Los Pinos', 'Vereda San Antonio',
-  'Vereda El Paraíso', 'Vereda El Carmen', 'Vereda El Roble', 'Vereda La Palma',
-  'Vereda Santa Rosa', 'Vereda El Placer', 'Vereda La Cumbre', 'Vereda Las Delicias',
-  'Vereda La Floresta', 'Vereda Los Ángeles', 'Vereda La Unión', 'Vereda Monteverde',
-  'Vereda Alto Bonito', 'Vereda El Edén', 'Vereda Campo Hermoso', 'Vereda La Loma',
-  'Vereda Las Brisas', 'Vereda El Jardín', 'Vereda Bella Vista', 'Vereda El Mirador',
-  'Vereda San José', 'Vereda La Ceiba', 'Vereda El Progreso', 'Vereda El Nogal'
+    'Vereda San Rafael', 'Vereda San Diego', 'Vereda El Triunfo', 'Vereda La Primavera',
+    'Vereda El Rosal', 'Vereda La Esperanza', 'Vereda Los Pinos', 'Vereda San Antonio',
+    'Vereda El Paraíso', 'Vereda El Carmen', 'Vereda El Roble', 'Vereda La Palma',
+    'Vereda Santa Rosa', 'Vereda El Placer', 'Vereda La Cumbre', 'Vereda Las Delicias',
+    'Vereda La Floresta', 'Vereda Los Ángeles', 'Vereda La Unión', 'Vereda Monteverde',
+    'Vereda Alto Bonito', 'Vereda El Edén', 'Vereda Campo Hermoso', 'Vereda La Loma',
+    'Vereda Las Brisas', 'Vereda El Jardín',
 ];
 
 const UserProfile = () => {
-  // 💡 MOCK DATA: Datos iniciales simulados para que el perfil se muestre inmediatamente
-  const [userData, setUserData] = useState({
-    nombre: 'Juan',
-    apellido: 'Pérez',
-    email: 'juan.perez@test.com',
-    telefono: '3101234567',
-    direccion: 'Calle 10 # 5-20',
-    vereda: 'Vereda San Rafael',
-    password: '', 
-    foto: null, 
-  });
-  
-  const [preview, setPreview] = useState(null); 
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(true); // 💡 TRUE: Inicia verificando sesión
-  const [processing, setProcessing] = useState(false); 
+    // ESTADOS PRINCIPALES
+    const [currentVideo, setCurrentVideo] = useState(0);
+    const [editable, setEditable] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [message, setMessage] = useState(null); 
+    const [errors, setErrors] = useState({});
+    const [showConfirm, setShowConfirm] = useState(false);
+    
+    // ESTADO DE CARGA PARA LA VALIDACIÓN DE SESIÓN
+    const [loading, setLoading] = useState(true); 
 
-  const fileInputRef = useRef(null);
+    // ESTADO DEL FORMULARIO (Datos de Registro)
+    const [form, setForm] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        location: '',
+    });
+    
+    // Función auxiliar para obtener datos de autenticación del localStorage
+    const getAuthData = () => {
+        const authToken = localStorage.getItem('auth_token');
+        const userDataString = localStorage.getItem('user_data');
+        
+        if (!authToken || !userDataString) {
+            return null;
+        }
 
-  /* Fondo con cambio de video y Verificación de Acceso */
-  useEffect(() => {
-    
-    // 1. Verificación de token
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      // Redirigir si no hay token
-      router.visit('/login'); 
-    } else {
-      // Si hay token, cargamos el perfil (simulado) y permitimos la vista
-      setLoading(false);
-    }
+        try {
+            const userData = JSON.parse(userDataString);
+            return { authToken, userId: userData.id };
+        } catch (e) {
+            console.error("Error al parsear user_data:", e);
+            return null;
+        }
+    };
+    
+    // 1. LÓGICA DE VERIFICACIÓN DE SESIÓN SOLICITADA
+    useEffect(() => {
+        const isAuthenticated = localStorage.getItem('is_authenticated');
+        
+        if (isAuthenticated !== 'true') {
+            router.visit('/login'); // Redirige si no está autenticado
+        } else {
+            setLoading(false); // Permite la renderización y la carga de datos
+        }
+    }, []); 
 
-    // 2. Efecto original de cambio de video
-    const interval = setInterval(() => setCurrentVideo(v => (v + 1) % videos.length), 10000);
-    return () => clearInterval(interval);
-  }, []);
+    // 2. EFECTO PARA CARGAR DATOS DEL PERFIL (Depende de que 'loading' sea false)
+    useEffect(() => {
+        if (loading === false) { 
+            const authData = getAuthData();
+            
+            if (!authData) {
+                setMessage({ type: 'error', text: 'Datos de sesión incompletos. Reinicia sesión.' });
+                setProcessing(true); 
+                setTimeout(() => router.visit('/login'), 3000); 
+                return;
+            }
+
+            const fetchUserData = async () => {
+                setProcessing(true);
+                try {
+                    // Petición GET para obtener los datos del usuario actual
+                    const response = await axios.get(`${API_BASE_URL}/users/${authData.userId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${authData.authToken}`,
+                            'Accept': 'application/json',
+                        }
+                    });
+
+                    const userData = response.data.data; 
+                    
+                    // Cargar los datos de registro en el formulario
+                    setForm({
+                        firstname: userData.firstname || '',
+                        lastname: userData.lastname || '',
+                        email: userData.email || '',
+                        location: userData.location || '',
+                    });
+                    
+                } catch (error) {
+                    console.error('Error al cargar datos del usuario:', error);
+                    setMessage({ type: 'error', text: 'Error al cargar el perfil. Vuelve a iniciar sesión.' });
+                    if (error.response && error.response.status === 401) {
+                        setTimeout(() => router.visit('/login'), 2000); 
+                    }
+                } finally {
+                    setProcessing(false);
+                }
+            };
+
+            fetchUserData();
+        }
+        
+        // Efecto para cambiar el video de fondo
+        const interval = setInterval(() => {
+            setCurrentVideo((prev) => (prev + 1) % videos.length);
+        }, 10000);
+        
+        return () => clearInterval(interval);
+        
+    }, [loading]); 
+    
+    // 💡 3. FUNCIÓN CORREGIDA PARA ACTUALIZAR PERFIL (USANDO AXIOS.PUT)
+    const handleUpdateProfile = async () => {
+        const authData = getAuthData();
+        if (!authData) return;
+
+        setProcessing(true);
+        setErrors({});
+        setMessage(null);
+        setShowConfirm(false);
+
+        // Se quita '_method: PUT' ya que usaremos axios.put
+        const updateData = {
+            firstname: form.firstname,
+            lastname: form.lastname,
+            email: form.email,
+            location: form.location,
+        };
+
+        try {
+            // 🚨 CAMBIO CLAVE: Usar axios.put para la actualización RESTful
+            await axios.put(`${API_BASE_URL}/users/${authData.userId}`, updateData, {
+                headers: {
+                    'Authorization': `Bearer ${authData.authToken}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json', 
+                }
+            });
+
+            setMessage({ type: 'success', text: '¡Perfil actualizado con éxito! Se actualizará la página en 3 segundos.' });
+            setEditable(false); 
+            setTimeout(() => {
+                 window.location.reload(); 
+            }, 3000);
+
+        } catch (error) {
+            setProcessing(false);
+            
+            if (error.response && error.response.status === 422) {
+                setErrors(error.response.data.errors);
+                setMessage({ type: 'error', text: 'Hay errores de validación. Revisa los campos.' });
+            } else {
+                console.error('Error al actualizar el perfil:', error.response || error);
+                setMessage({ type: 'error', text: 'Error en la conexión o el servidor. (Verifica el token o el ID del usuario).' });
+            }
+        }
+    };
+    
+    // --- MANEJADORES ---
+    const handleChange = (e) => {
+        setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const enableEdit = () => {
+        setEditable(true);
+        setMessage(null);
+    };
+
+    const handlePasswordChange = () => {
+        setMessage({ type: 'info', text: 'Serás redirigido para cambiar tu contraseña.' });
+        setTimeout(() => {
+             router.visit('/change-password'); 
+        }, 2000);
+    };
+
+    const currentVideoSrc = videos[currentVideo];
+
+    // Muestra pantalla de carga mientras se verifica la sesión
+    if (loading) {
+        return (
+            <MainLayout>
+                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white', fontSize: '1.2rem' }}>
+                    Verificando sesión. Por favor espere...
+                </div>
+            </MainLayout>
+        );
+    }
 
 
-  // --- Handlers del formulario ---
+    return (
+        <MainLayout>
+            {/* Video de fondo */}
+            <div className="video-background">
+                <video key={currentVideoSrc} autoPlay loop muted className="video-element">
+                    <source src={currentVideoSrc} type="video/mp4" />
+                    Tu navegador no soporta videos.
+                </video>
+                <div className="overlay" />
+            </div>
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
-  };
+            <div className="profile-container">
+                <div className="profile-card">
+                    <h2>Mi Perfil</h2>
+                    
+                    {/* Mensajes de estado (Éxito/Error) */}
+                    {message && (
+                        <div className={`message ${message.type}`}>
+                            {message.type === 'success' && <FaCheckCircle className="mr-2" />}
+                            {message.text}
+                        </div>
+                    )}
 
-  const handleImageChange = e => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreview(url);
-      setUserData(prev => ({ ...prev, foto: file })); 
-    }
-  };
+                    <div className="profile-image-static">
+                        <FaUser className="default-user-icon-large" />
+                    </div>
+                    
+                    <form className="profile-form" onSubmit={(e) => { e.preventDefault(); setShowConfirm(true); }}>
+                        
+                        {/* ----------------- CAMPOS DE REGISTRO MODIFICABLES ----------------- */}
 
-  const handleRemovePhoto = () => {
-    setPreview(null);
-    setUserData(prev => ({ ...prev, foto: 'REMOVE' })); 
-  };
+                        {/* Nombre (firstname) */}
+                        <label htmlFor="firstname">Nombre(s)</label>
+                        <input
+                            type="text"
+                            id="firstname"
+                            name="firstname"
+                            value={form.firstname}
+                            onChange={handleChange}
+                            required
+                            disabled={!editable || processing}
+                        />
+                        {errors.firstname && <div className="error">{errors.firstname}</div>}
 
-  // 💡 SIMULACIÓN: Lógica para "guardar" los cambios (sin API)
-  const handleUpdateProfile = () => {
-    setShowConfirm(false);
-    setProcessing(true);
+                        {/* Apellidos (lastname) */}
+                        <label htmlFor="lastname">Apellido(s)</label>
+                        <input
+                            type="text"
+                            id="lastname"
+                            name="lastname"
+                            value={form.lastname}
+                            onChange={handleChange}
+                            required
+                            disabled={!editable || processing}
+                        />
+                        {errors.lastname && <div className="error">{errors.lastname}</div>}
 
-    // Aquí iría la lógica de API, la reemplazamos por un temporizador de simulación
-    setTimeout(() => {
-        console.log("Simulación de guardado. Datos actualizados localmente:", userData);
-        
-        // Limpiamos la contraseña después de la "actualización" simulada
-        setUserData(prev => ({ ...prev, password: '' })); 
-        
-        setSaved(true);
-        setEditable(false);
-        setProcessing(false);
-        setTimeout(() => setSaved(false), 3000);
-        
-    }, 1500); 
-  };
+                        {/* Email (email) */}
+                        <label htmlFor="email">Correo Electrónico</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            required
+                            disabled={!editable || processing}
+                        />
+                        {errors.email && <div className="error">{errors.email}</div>}
 
-  const enableEdit = () => {
-    setEditable(true);
-  };
-
-  // Muestra un estado de carga mientras verifica
-  if (loading) {
-    return (
-        <div className="video-profile-wrapper">
-             <div className="loading-container" style={{ color: 'white', fontSize: '24px' }}>Verificando sesión...</div>
-        </div>
-    );
-  }
-
-  return (
-    <MainLayout>
-    <div className="video-profile-wrapper">
-      <video key={currentVideo} autoPlay loop muted className="background-video">
-        <source src={videos[currentVideo]} type="video/mp4" />
-        Tu navegador no soporta el video.
-      </video>
-
-      {/* Modal de confirmación */}
-      {showConfirm && (
-        <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3>¿Estás seguro de guardar los cambios?</h3>
-            <div className="modal-buttons">
-              <button className="btn-confirm" onClick={handleUpdateProfile} disabled={processing}>
-                {processing ? 'Guardando...' : 'Sí, guardar'}
-              </button>
-              <button className="btn-cancel" onClick={() => setShowConfirm(false)} disabled={processing}>Cancelar</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Mensaje de éxito */}
-      {saved && (
-        <div className="toast-success">
-          <FaCheckCircle /> Cambios guardados
-        </div>
-      )}
-
-      <div className="profile-container">
-        <h2>Perfil de Usuario</h2>
-        <p>Administra tu información personal</p>
-
-        <form className="profile-form" onSubmit={e => e.preventDefault()}>
-          <label>Nombre</label>
-          <input type="text" name="nombre" value={userData.nombre} onChange={handleChange} disabled={!editable || processing} />
-
-          <label>Apellido</label>
-          <input type="text" name="apellido" value={userData.apellido} onChange={handleChange} disabled={!editable || processing} />
-
-          <label>Correo</label>
-          <input type="email" name="email" value={userData.email} disabled /> 
-
-          <label>Teléfono</label>
-          <input type="tel" name="telefono" value={userData.telefono} onChange={handleChange} disabled={!editable || processing} />
-
-          <label>Dirección</label>
-          <input type="text" name="direccion" value={userData.direccion} onChange={handleChange} disabled={!editable || processing} />
-
-          <label>Vereda</label>
-          <select name="vereda" value={userData.vereda} onChange={handleChange} disabled={!editable || processing}>
-            <option value="">Selecciona una vereda</option>
-            {veredasDisponibles.map(v => <option key={v} value={v}>{v}</option>)}
-          </select>
-
-          <label>Contraseña</label>
-          <input 
-            type="password" 
-            name="password" 
-            placeholder="******" 
-            value={userData.password} 
-            onChange={handleChange} 
-            disabled={!editable || processing} 
-          />
-
-          {/* FOTO */}
-          <label>Foto de perfil</label>
-          <div className="photo-section">
-            <div className="circle-image" onClick={() => editable && !processing && fileInputRef.current?.click()}>
-              {preview ? <img src={preview} alt="perfil" /> : <FaUser className="default-user-icon" />}
-            </div>
-
-            <div className="photo-actions">
-              <div onClick={() => editable && !processing && document.getElementById('cameraInput').click()}>
-                <FaCamera /><span>Cámara</span>
-              </div>
-              <div onClick={() => editable && !processing && document.getElementById('galleryInput').click()}>
-                <FaImage /><span>Galería</span>
-              </div>
-              <div onClick={() => editable && !processing && handleRemovePhoto()}>
-                <FaTrash /><span>Eliminar</span>
-              </div>
-            </div>
-
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={handleImageChange} disabled={processing} />
-            <input type="file" id="galleryInput" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} ref={fileInputRef} disabled={processing} />
-          </div>
-
-          {editable ? (
-            <button type="button" onClick={() => setShowConfirm(true)} disabled={processing}>
-                {processing ? 'Procesando...' : 'Guardar cambios'}
-            </button>
-          ) : (
-            <button type="button" onClick={enableEdit} disabled={processing}>Editar información</button>
-          )}
-        </form>
-      </div>
-    </div>
-    </MainLayout>
-  );
+                        {/* Ubicación (location) */}
+                        <label htmlFor="location">Ubicación (Vereda/Sector)</label>
+                        <select
+                            id="location"
+                            name="location"
+                            value={form.location}
+                            onChange={handleChange}
+                            required
+                            disabled={!editable || processing}
+                        >
+                            <option value="">Selecciona tu ubicación</option>
+                            {veredasDisponibles.map((vereda) => (
+                                <option key={vereda} value={vereda}>{vereda}</option>
+                            ))}
+                        </select>
+                        {errors.location && <div className="error">{errors.location}</div>}
+                        
+                        
+                        {/* Botón para cambiar contraseña */}
+                        <button type="button" onClick={handlePasswordChange} disabled={processing} className="password-button">
+                            <FaLock className="mr-2"/> Cambiar Contraseña
+                        </button>
+                        
+                        {/* ----------------- BOTONES DE ACCIÓN ----------------- */}
+                        
+                        {editable ? (
+                            <>
+                            {showConfirm ? (
+                                <div className="confirm-container">
+                                    <p>¿Estás seguro de guardar los cambios?</p>
+                                    <div className="confirm-buttons">
+                                        <button type="button" onClick={handleUpdateProfile} disabled={processing}>
+                                            {processing ? 'Guardando...' : 'Sí, Guardar'}
+                                        </button>
+                                        <button type="button" onClick={() => setShowConfirm(false)} disabled={processing} className="cancel">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <button type="submit" disabled={processing || message?.type === 'success'}>
+                                    {processing ? 'Procesando...' : 'Guardar cambios'}
+                                </button>
+                            )}
+                            </>
+                        ) : (
+                            <button type="button" onClick={enableEdit} disabled={processing}>Editar información</button>
+                        )}
+                    </form>
+                </div>
+            </div>
+        </MainLayout>
+    );
 };
 
 export default UserProfile;
